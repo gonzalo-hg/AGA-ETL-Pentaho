@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Cargar AGA</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/styles/cssandjs/main.css}" rel="stylesheet" />
+    
+</head>
+<body>
+    
+    <div class="carga">
+  		<form action="cargarArchivo" th:object="${path}" method="post">
+		  <label for="fname">Ruta del AGA:</label>
+		  <input type="text" name="path"><br><br>
+		  <input type="submit" value="Cargar archivo">
+		</form>
+	</div>
+	
+ </body>
+</html>

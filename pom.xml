@@ -16,7 +16,7 @@
 
 	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>8</java.version>
 	</properties>
 	<repositories>
 		<repository>
@@ -27,9 +27,6 @@
 	<dependencies>
 
 
-
-
-		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -40,106 +37,82 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+				
+		
+		<dependency>
 			<groupId>pentaho</groupId>
-
 			<artifactId>pentaho-mongodb-plugin</artifactId>
-
 			<version>7.1.0.0-12</version>
-
 		</dependency>
 
 
 		<dependency>
-
 			<groupId>pentaho</groupId>
-
 			<artifactId>pentaho-mongo-utils</artifactId>
-
 			<version>7.1.0.0-12</version>
-
 			<scope>provided</scope>
-
 		</dependency>
 
+
 		<dependency>
-
 			<groupId>pentaho-kettle</groupId>
-
 			<artifactId>kettle-core</artifactId>
-
 			<version>7.1.0.32-246</version>
-
 		</dependency>
 
 
 		<dependency>
-
 			<groupId>commons-vfs</groupId>
-
 			<artifactId>commons-vfs</artifactId>
-
 			<version>1.0</version>
-
 		</dependency>
 
 
 		<dependency>
-
 			<groupId>pentaho-kettle</groupId>
-
 			<artifactId>kettle-engine</artifactId>
-
 			<version>7.1.0.32-246</version>
-
 		</dependency>
 
 
 		<dependency>
-
 			<groupId>pentaho-kettle</groupId>
-
 			<artifactId>kettle-ui-swt</artifactId>
-
 			<version>7.1.0.32-246</version>
-
 		</dependency>
 
 
 		<dependency>
-
 			<groupId>pentaho-library</groupId>
-
 			<artifactId>libformula</artifactId>
-
 			<version>5.4.1.8-209</version>
-
-
 			<exclusions>
-
-
 				<exclusion>
-
 					<groupId>commons-logging</groupId>
-
 					<artifactId>commons-logging-api</artifactId>
-
 				</exclusion>
-
 			</exclusions>
-
 		</dependency>
-
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
 
+
 		<dependency>
 			<groupId>com.linuxense</groupId>
 			<artifactId>javadbf</artifactId>
 			<version>0.4.0</version>
+		</dependency>
+		
+		<dependency>
+		  <groupId>org.apache.httpcomponents</groupId>
+		  <artifactId>httpclient</artifactId>
+		  <scope>test</scope>
 		</dependency>
 
 	</dependencies>

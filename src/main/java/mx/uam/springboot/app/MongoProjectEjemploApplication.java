@@ -15,11 +15,7 @@ import org.pentaho.di.trans.TransMeta;
 public class MongoProjectEjemploApplication {
 
 	public static void main(String[] args){
-		SpringApplication.run(MongoProjectEjemploApplication.class, args);
-		//StepPluginType.getInstance().getPluginFolders()
-		//		.add(new PluginFolder("/plugins", false, true));
-		
-		
+		SpringApplication.run(MongoProjectEjemploApplication.class, args);		
 	}
 
 }
