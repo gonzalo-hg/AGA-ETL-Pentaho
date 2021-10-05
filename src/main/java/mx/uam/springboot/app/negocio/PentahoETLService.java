@@ -5,6 +5,8 @@ import org.pentaho.di.core.exception.KettleException;
 import org.pentaho.di.core.logging.LogLevel;
 import org.pentaho.di.core.plugins.PluginFolder;
 import org.pentaho.di.core.plugins.StepPluginType;
+import org.pentaho.di.job.Job;
+import org.pentaho.di.job.JobMeta;
 import org.pentaho.di.trans.Trans;
 import org.pentaho.di.trans.TransMeta;
 import org.springframework.stereotype.Service;
@@ -25,18 +27,20 @@ public class PentahoETLService {
 			StepPluginType.getInstance().getPluginFolders().add(new PluginFolder("pentahoPlugins/libswt", false, true));
 			KettleEnvironment.init();
 			//Se define transMeta con la ruta de la transformación con extensión .ktr
-			TransMeta transMeta = new TransMeta("transform1.ktr");
-			Trans trans = new Trans(transMeta);
+			JobMeta jobMeta = new JobMeta("JOBBD/JOBunirbasededatos.kjb",null);
+			Job job = new Job(null,jobMeta);
+			job.start();
+			job.waitUntilFinished();
 			//Se comparte un parámetro con los metadatos de la transformación
-			trans.shareVariablesWith(transMeta);
+			//trans.shareVariablesWith(transMeta);
 			//El parámetro compartido es la ruta del AGA.BFD que se va a tomar para la extracción de datos
-			transMeta.setParameterValue("pathName", filePath);
-			trans.setLogLevel(LogLevel.ERROR);
+			//transMeta.setParameterValue("pathName", filePath);
+			/*trans.setLogLevel(LogLevel.ERROR);
 			trans.execute(null);
-			trans.waitUntilFinished();
+			trans.waitUntilFinished();*/
 			log.info("Extracción y carga de AGA.DBF ha concluido");
 
-			if (trans.getErrors() > 0) {
+			if (job.getErrors() > 0) {
 				log.info("Ocurrió un error durante la extracción y carga de AGA.DBF");
 			}
 		} catch (KettleException e) {
