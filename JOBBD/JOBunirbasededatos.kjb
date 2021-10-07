@@ -4,13 +4,54 @@
   <description />
   <extended_description />
   <job_version />
+  <job_status>0</job_status>
   <directory>/</directory>
   <created_user>-</created_user>
   <created_date>2021/09/28 10:30:51.901</created_date>
   <modified_user>-</modified_user>
   <modified_date>2021/09/28 10:30:51.901</modified_date>
   <parameters>
-    </parameters>
+    <parameter>
+      <name>pathABC</name>
+      <default_value />
+      <description />
+    </parameter>
+    <parameter>
+      <name>pathAGA</name>
+      <default_value />
+      <description />
+    </parameter>
+    <parameter>
+      <name>pathHEGR1</name>
+      <default_value />
+      <description />
+    </parameter>
+    <parameter>
+      <name>pathHEGR2</name>
+      <default_value />
+      <description />
+    </parameter>
+    <parameter>
+      <name>pathHEGR3</name>
+      <default_value />
+      <description />
+    </parameter>
+    <parameter>
+      <name>pathHEGR4</name>
+      <default_value />
+      <description />
+    </parameter>
+    <parameter>
+      <name>pathHEGR5</name>
+      <default_value />
+      <description />
+    </parameter>
+    <parameter>
+      <name>pathHEGR6</name>
+      <default_value />
+      <description />
+    </parameter>
+  </parameters>
   <slaveservers>
     </slaveservers>
   <job-log-table>
@@ -335,6 +376,11 @@
       <run_configuration>Pentaho local</run_configuration>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
+        <parameter>
+          <name>pathAGA</name>
+          <stream_name />
+          <value>${pathAGA}</value>
+        </parameter>
       </parameters>
       <parallel>Y</parallel>
       <draw>Y</draw>
@@ -371,6 +417,11 @@
       <run_configuration>Pentaho local</run_configuration>
       <parameters>
         <pass_all_parameters>N</pass_all_parameters>
+        <parameter>
+          <name>pathHEGR1</name>
+          <stream_name />
+          <value>${pathHEGR1}</value>
+        </parameter>
       </parameters>
       <parallel>N</parallel>
       <draw>Y</draw>
@@ -407,6 +458,11 @@
       <run_configuration>Pentaho local</run_configuration>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
+        <parameter>
+          <name>pathHEGR3</name>
+          <stream_name />
+          <value>${pathHEGR3}</value>
+        </parameter>
       </parameters>
       <parallel>N</parallel>
       <draw>Y</draw>
@@ -443,6 +499,11 @@
       <run_configuration>Pentaho local</run_configuration>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
+        <parameter>
+          <name>pathHEGR4</name>
+          <stream_name />
+          <value>${pathHEGR4}</value>
+        </parameter>
       </parameters>
       <parallel>N</parallel>
       <draw>Y</draw>
@@ -479,6 +540,11 @@
       <run_configuration>Pentaho local</run_configuration>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
+        <parameter>
+          <name>pathHEGR5</name>
+          <stream_name />
+          <value>${pathHEGR5}</value>
+        </parameter>
       </parameters>
       <parallel>N</parallel>
       <draw>Y</draw>
@@ -515,6 +581,11 @@
       <run_configuration>Pentaho local</run_configuration>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
+        <parameter>
+          <name>pathHEGR6</name>
+          <stream_name />
+          <value>${pathHEGR6}</value>
+        </parameter>
       </parameters>
       <parallel>N</parallel>
       <draw>Y</draw>
@@ -551,6 +622,11 @@
       <run_configuration>Pentaho local</run_configuration>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
+        <parameter>
+          <name>pathHEGR2</name>
+          <stream_name />
+          <value>${pathHEGR2}</value>
+        </parameter>
       </parameters>
       <parallel>N</parallel>
       <draw>Y</draw>
@@ -587,12 +663,17 @@
       <run_configuration>Pentaho local</run_configuration>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
+        <parameter>
+          <name>pathABC</name>
+          <stream_name />
+          <value>${pathABC}</value>
+        </parameter>
       </parameters>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>880</xloc>
-      <yloc>320</yloc>
+      <xloc>704</xloc>
+      <yloc>544</yloc>
     </entry>
   </entries>
   <hops>
@@ -660,52 +741,7 @@
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>HERG1</from>
-      <to>Cargar ABC</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>HERG2</from>
-      <to>Cargar ABC</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>HERG3</from>
-      <to>Cargar ABC</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>HERG4</from>
-      <to>Cargar ABC</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>HERG5</from>
-      <to>Cargar ABC</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>HERG6</from>
+      <from>Cargando AGA</from>
       <to>Cargar ABC</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>

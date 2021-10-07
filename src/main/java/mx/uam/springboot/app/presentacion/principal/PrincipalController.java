@@ -52,7 +52,7 @@ public class PrincipalController {
     public String cargarAGA(@ModelAttribute("path") String string) {
 		log.info("Ejecutando pentahoETLRestController.extractAndLoadAGA()");
 		log.info("Ruta del archivo: " + string);
-		pentahoETLService.extractAndLoadAGA(string);
+		pentahoETLService.extractAndLoadAGA("Archivos/");
 		return "vistaPrincipal/Principal";
     }
 	

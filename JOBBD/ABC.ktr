@@ -6,8 +6,14 @@
     <extended_description />
     <trans_version />
     <trans_type>Normal</trans_type>
+    <trans_status>0</trans_status>
     <directory>/</directory>
     <parameters>
+      <parameter>
+        <name>pathABC</name>
+        <default_value />
+        <description />
+      </parameter>
     </parameters>
     <log>
       <trans-log-table>
@@ -934,7 +940,7 @@
     <length>Characters</length>
     <add_to_result_filenames>Y</add_to_result_filenames>
     <file>
-      <name>/home/antonio/Escritorio/Base de Datos Proyecto terminal/ins_abc_21i_1abril_1.txt</name>
+      <name>${pathABC}</name>
       <filemask />
       <exclude_filemask />
       <file_required>N</file_required>

@@ -29,8 +29,18 @@ public class PentahoETLService {
 			//Se define transMeta con la ruta de la transformación con extensión .ktr
 			JobMeta jobMeta = new JobMeta("JOBBD/JOBunirbasededatos.kjb",null);
 			Job job = new Job(null,jobMeta);
-			job.start();
-			job.waitUntilFinished();
+			job.shareVariablesWith(jobMeta);
+			
+			
+			jobMeta.setParameterValue("pathAGA", filePath+"aga_lic_2021I_izt_4a_sem.DBF");
+			jobMeta.setParameterValue("pathHEGR1", filePath+"/52kar20o.txt");
+			jobMeta.setParameterValue("pathHEGR2", filePath+"/53kar20o.txt");
+			jobMeta.setParameterValue("pathHEGR3", filePath+"/54kar20o.txt");
+			jobMeta.setParameterValue("pathHEGR4", filePath+"/55kar20o.txt");
+			jobMeta.setParameterValue("pathHEGR5", filePath+"/56kar20o.txt");
+			jobMeta.setParameterValue("pathHEGR6", filePath+"/57kar20o.txt");
+			jobMeta.setParameterValue("pathABC", filePath+"/ins_abc_21i_1abril_1.txt");
+			//job.getJobMeta().setInternalKettleVariables(job);
 			//Se comparte un parámetro con los metadatos de la transformación
 			//trans.shareVariablesWith(transMeta);
 			//El parámetro compartido es la ruta del AGA.BFD que se va a tomar para la extracción de datos
@@ -38,6 +48,8 @@ public class PentahoETLService {
 			/*trans.setLogLevel(LogLevel.ERROR);
 			trans.execute(null);
 			trans.waitUntilFinished();*/
+			job.start();
+			job.waitUntilFinished();
 			log.info("Extracción y carga de AGA.DBF ha concluido");
 
 			if (job.getErrors() > 0) {

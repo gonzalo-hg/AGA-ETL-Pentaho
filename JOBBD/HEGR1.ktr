@@ -6,8 +6,14 @@
     <extended_description />
     <trans_version />
     <trans_type>Normal</trans_type>
+    <trans_status>0</trans_status>
     <directory>/</directory>
     <parameters>
+      <parameter>
+        <name>pathHEGR1</name>
+        <default_value />
+        <description />
+      </parameter>
     </parameters>
     <log>
       <trans-log-table>
@@ -443,7 +449,7 @@
     </hop>
     <hop>
       <from>Select values 2</from>
-      <to>separara campos 2</to>
+      <to>separar campos </to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -452,7 +458,7 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>separara campos 2</from>
+      <from>separar campos </from>
       <to>Paso a Mongodb correcto v1</to>
       <enabled>Y</enabled>
     </hop>
@@ -692,7 +698,7 @@
     <length>Characters</length>
     <add_to_result_filenames>Y</add_to_result_filenames>
     <file>
-      <name>/home/antonio/Escritorio/Base de Datos Proyecto terminal/52kar20o.txt</name>
+      <name>${pathHEGR1}</name>
       <filemask />
       <exclude_filemask />
       <file_required>N</file_required>
@@ -758,7 +764,7 @@
     </GUI>
   </step>
   <step>
-    <name>separara campos 2</name>
+    <name>separar campos </name>
     <type>FieldSplitter</type>
     <description />
     <distribute>Y</distribute>
