@@ -19,7 +19,7 @@ public class PentahoETLRestController {
 	@PostMapping("/pentahoetl/aga")
 	public void extractAndLoadAGA() {
 		log.info("Ejecutando pentahoETLRestController.extractAndLoadAGA()");
-		pentahoETLService.extractAndLoadAGA("/Users/priscilianojimenez/Documents/Ulises/21-P/Proyecto terminal/aga_lic_2021I_izt_4a_sem.DBF");
+		//pentahoETLService.extractAndLoadAGA("/Users/priscilianojimenez/Documents/Ulises/21-P/Proyecto terminal/aga_lic_2021I_izt_4a_sem.DBF");
 	}
 	
 }
