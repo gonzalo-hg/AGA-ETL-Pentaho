@@ -106,8 +106,6 @@ public class FileUploadController {
 		
 		if(!fileNames.isEmpty()) {
 			String filePath = storageService.getRootLocation()+"/"+fileNames.get(0);
-			System.out.println(filePath);
-			//pentahoETLService.extractAndLoadAGA(filePath);
 		}
 
 		return "redirect:/";
@@ -119,10 +117,8 @@ public class FileUploadController {
 			public ResponseEntity<FileDataDto> addFileData(@RequestBody FileDataDto newData){
 			try {
 				//FileDataDto nuevo = FileDataDto.creaDto(null, null)
-				System.out.println(newData);
-				System.out.println("key: "+newData.getKey());
-				System.out.println("value: "+newData.getValor());
 				this.fileDataList.add(newData);
+				System.out.println();
 				return ResponseEntity.status(HttpStatus.CREATED).body(newData);
 			} catch(Exception ex) {
 				HttpStatus status;
@@ -134,8 +130,15 @@ public class FileUploadController {
 				throw new ResponseStatusException(status, ex.getMessage());
 				
 			}
-		
 	}
+	
+	@PostMapping("/generarbd")
+	public String generabd() {
+
+		pentahoETLService.extractAndLoadAGA(this.fileDataList, storageService.getRootLocation());
+		return "redirect:/";
+	}
+	
 
 	@ExceptionHandler(StorageFileNotFoundException.class)
 	public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {

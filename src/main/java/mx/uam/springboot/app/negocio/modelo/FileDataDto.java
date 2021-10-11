@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class FileDataDto {
 	private String key;
-	private String valor;
+	private String value;
 
 }
