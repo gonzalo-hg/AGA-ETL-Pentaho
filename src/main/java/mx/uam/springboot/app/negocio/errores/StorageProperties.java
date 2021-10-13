@@ -1,4 +1,4 @@
-package mx.uam.springboot.app.storage;
+package mx.uam.springboot.app.negocio.errores;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

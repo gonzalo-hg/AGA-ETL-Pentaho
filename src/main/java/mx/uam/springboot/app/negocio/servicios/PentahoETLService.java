@@ -1,4 +1,4 @@
-package mx.uam.springboot.app.negocio;
+package mx.uam.springboot.app.negocio.servicios;
 
 import java.util.List;
 
@@ -125,7 +125,7 @@ public class PentahoETLService {
 			trans.waitUntilFinished();*/
 			job.start();
 			job.waitUntilFinished();
-			log.info("Extracción y carga de AGA.DBF ha concluido");
+			log.info("Extracción y carga de todos los archivos ha concluido");
 
 			if (job.getErrors() > 0) {
 				log.info("Ocurrió un error durante la extracción y carga de los archivos");

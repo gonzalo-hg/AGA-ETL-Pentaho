@@ -1,4 +1,4 @@
-package mx.uam.springboot.app.storage;
+package mx.uam.springboot.app.negocio.servicios;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +20,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.slf4j.Slf4j;
+import mx.uam.springboot.app.negocio.errores.StorageException;
+import mx.uam.springboot.app.negocio.errores.StorageFileNotFoundException;
+import mx.uam.springboot.app.negocio.errores.StorageProperties;
+import mx.uam.springboot.app.negocio.interfaces.StorageService;
 import mx.uam.springboot.app.presentacion.principal.PrincipalController;
 
 @Slf4j
@@ -54,32 +58,6 @@ public class FileSystemStorageService implements StorageService {
 				log.info("Ruta destino = "+destinationFile);
 				Files.copy(inputStream, destinationFile,
 					StandardCopyOption.REPLACE_EXISTING);
-				
-				boolean copyCompleted = false;
-				//Asegura que el archivo se haya subido al servidor satisfactoriamente
-				/*while(true) {
-		            
-		            RandomAccessFile ran = null;
-		            try {
-		                ran = new RandomAccessFile(file, "rw");
-		                copyCompleted = true;
-		                break;
-		            } catch (Exception ex) {
-		                log.info("El archivo aún está cargándose" + ex.getMessage());
-		            } finally {
-		                if(ran != null) try {
-		                    ran.close();
-		                } catch (IOException ex) {
-		                     
-		                }
-		                ran = null;
-		            }
-		 
-		        }
-		        
-		       if(copyCompleted){
-		           log.info("Carga de "+file.getOriginalFilename()+" completada");
-		       }*/
 			}
 		}
 		catch (IOException e) {

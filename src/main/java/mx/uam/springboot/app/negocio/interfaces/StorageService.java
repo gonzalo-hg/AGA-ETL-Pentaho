@@ -1,4 +1,4 @@
-package mx.uam.springboot.app.storage;
+package mx.uam.springboot.app.negocio.interfaces;
 
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;

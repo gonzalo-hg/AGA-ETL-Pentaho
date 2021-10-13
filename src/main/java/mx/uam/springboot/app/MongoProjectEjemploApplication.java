@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
-import mx.uam.springboot.app.storage.StorageProperties;
-import mx.uam.springboot.app.storage.StorageService;
+import mx.uam.springboot.app.negocio.errores.StorageProperties;
+import mx.uam.springboot.app.negocio.interfaces.StorageService;
 
 import org.pentaho.di.core.KettleEnvironment;
 import org.pentaho.di.core.exception.KettleException;
@@ -25,6 +25,11 @@ public class MongoProjectEjemploApplication {
 		SpringApplication.run(MongoProjectEjemploApplication.class, args);		
 	}
 	
+	/**
+	 * Elimina todos los archivos que existen en la carpeta "upload-dir" e inicializa el storageService
+	 * @param storageService
+	 * @return
+	 */
 	@Bean
 	CommandLineRunner init(StorageService storageService) {
 		return (args) -> {
