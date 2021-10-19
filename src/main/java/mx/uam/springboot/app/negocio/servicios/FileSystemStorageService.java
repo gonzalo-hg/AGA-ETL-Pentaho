@@ -20,10 +20,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.slf4j.Slf4j;
-import mx.uam.springboot.app.negocio.errores.StorageException;
-import mx.uam.springboot.app.negocio.errores.StorageFileNotFoundException;
-import mx.uam.springboot.app.negocio.errores.StorageProperties;
 import mx.uam.springboot.app.negocio.interfaces.StorageService;
+import mx.uam.springboot.app.negocio.recursos.StorageException;
+import mx.uam.springboot.app.negocio.recursos.StorageFileNotFoundException;
+import mx.uam.springboot.app.negocio.recursos.StorageProperties;
 import mx.uam.springboot.app.presentacion.principal.PrincipalController;
 
 @Slf4j

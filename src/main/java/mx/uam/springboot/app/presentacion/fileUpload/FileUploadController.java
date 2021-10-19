@@ -40,9 +40,10 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
-import mx.uam.springboot.app.negocio.errores.StorageFileNotFoundException;
 import mx.uam.springboot.app.negocio.interfaces.StorageService;
 import mx.uam.springboot.app.negocio.modelo.FileDataDto;
+import mx.uam.springboot.app.negocio.modelo.ResponseTransfer;
+import mx.uam.springboot.app.negocio.recursos.StorageFileNotFoundException;
 import mx.uam.springboot.app.negocio.servicios.PentahoETLService;
 import mx.uam.springboot.app.presentacion.principal.PrincipalController;
 
@@ -92,13 +93,17 @@ public class FileUploadController {
 	}
 	
 	/**
-	 * Maneja la subida de un archivo al navegador. El archivo es almacenado en el directorio "upload-dir" .
+	 *  Maneja la subida de un archivo al navegador. El archivo es almacenado en el directorio "upload-dir" .
 	 * @param file El archivo obtenido del navegador
-	 * @param redirectAttributes
-	 * @return ResponseEntity.ok("")
+	 * @param requiredExtension La extensión del archivo solicitada al usuario en el componente file-upload dentro del cual cargó el archivo
+	 * @param givenExtension La extensión del archivo que cargó el usuario al componente file-upload
+	 * @param redirectAttributes 
+	 * @return ResponseEntity.status.HttpStatus.OK para una subida exitosa del archivo al servidor, una 'ResponseStatusException' en caso contrario
 	 */
-	@PostMapping(path = "/")
-	public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file,
+	@PostMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ResponseTransfer> handleFileUpload(
+			@RequestParam("file") MultipartFile file, 
+			@RequestParam("requiredExtension") String requiredExtension, 
 			RedirectAttributes redirectAttributes) {
 		
 		try {
@@ -111,11 +116,36 @@ public class FileUploadController {
 					path -> path.getFileName().toString())
 					.collect(Collectors.toList());
 			
+			/**
+			 * Se verifica que la extensión requerida del archivo en el frontend sea la misma que la extensión del archivo que cargó el usuario
+			 */
+			String extension = "";
 			if(!fileNames.isEmpty()) {
-				String filePath = storageService.getRootLocation()+"/"+fileNames.get(0);
+				switch(requiredExtension){
+			      case ".txt":
+			        extension = "text/plain";
+			        break;
+			      case ".DBF":
+			    	  extension = "application/octet-stream";
+			        break;
+			      default :
+			    	  extension = "";
+			        break;
+			    }
+				System.out.println(file.getContentType());
+				System.out.println(extension);
+				if(file.getContentType().contentEquals(extension)){
+					System.out.println("true");
+				}else {
+					System.out.println("false");
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseTransfer("El archivo "+file.getOriginalFilename()+" no cumple con la extensión requerida"));
+				}
+				System.out.println(file.getContentType());
+				System.out.println("La extension requerida es: "+requiredExtension);
+				System.out.println("La extension dada es: "+file.getContentType());
 			}
-
-			return ResponseEntity.ok("");
+			
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseTransfer("¡El archivo '"+file.getOriginalFilename()+"' ha sido cargado al servidor con éxito!"));
 		} catch (Exception e) {
 			HttpStatus status;
 			if(e instanceof IllegalArgumentException) {

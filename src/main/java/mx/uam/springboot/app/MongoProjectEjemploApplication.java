@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
-import mx.uam.springboot.app.negocio.errores.StorageProperties;
 import mx.uam.springboot.app.negocio.interfaces.StorageService;
+import mx.uam.springboot.app.negocio.recursos.StorageProperties;
 
 import org.pentaho.di.core.KettleEnvironment;
 import org.pentaho.di.core.exception.KettleException;
