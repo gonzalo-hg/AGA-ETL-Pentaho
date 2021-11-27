@@ -1,5 +1,6 @@
 package mx.uam.springboot.app.presentacion.fileUpload;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,6 +13,7 @@ import java.util.stream.Stream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.vfs2.FileNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,7 +52,7 @@ import mx.uam.springboot.app.presentacion.principal.PrincipalController;
 
 @Slf4j
 @Controller
-@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
+@CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE })
 public class FileUploadController {
 
 	private final StorageService storageService;
@@ -67,125 +70,169 @@ public class FileUploadController {
 	 * 
 	 * @return Una lista con los nombres de todos los archivos que se han subido
 	 */
-	@GetMapping(path="/files",
-			produces=MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path = "/files", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<String>> listUploadedFiles() {
 
-		List<String> fileNames = storageService.loadAll().map(
-				path -> path.getFileName().toString())
+		List<String> fileNames = storageService.loadAll().map(path -> path.getFileName().toString())
 				.collect(Collectors.toList());
 
 		return ResponseEntity.status(HttpStatus.OK).body(fileNames);
 	}
 
 	/**
-	 * Cargar el archivo (si existe) y se lo envía al navegador para descarga
+	 * Carga en memoria el archivo con el nombre recibido (si existe) y se lo envía
+	 * al navegador para descarga
+	 * 
 	 * @param filename El nombre del archivo a cargar que será enviado al navegador
-	 * @return Un response header tipo CONTENT_DISPOSITION que contiene el archivo de respuesta
+	 * @return Un response header tipo CONTENT_DISPOSITION que contiene el archivo
+	 *         de respuesta
 	 */
 	@GetMapping("/files/{filename:.+}")
 	@ResponseBody
 	public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
 
 		Resource file = storageService.loadAsResource(filename);
-		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-				"attachment; filename=\"" + file.getFilename() + "\"").body(file);
+		return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+				.body(file);
+	}
+	
+	/**
+	 * Elimina el archivo con el nombre dado del directorio upload-dir 
+	 * @param filename El nombre del archivo que se quiere eliminar
+	 * @return
+	 */
+	@DeleteMapping(path = "/files/{filename}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ResponseTransfer> deleteFile(@PathVariable String filename) {
+
+		try {
+			storageService.deleteFile(filename);
+		} catch (IOException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new ResponseTransfer("No se ha encontrado un archivo con el nombre '" + filename
+							+ "' dentro del directorio de archivos del servidor"));
+		}
+		//Se elimina el fileData del archivo que se eliminó
+		FileDataDto fileToRemove = new FileDataDto();
+		if (!this.fileDataList.isEmpty()) {
+			for(FileDataDto fileData: this.fileDataList) {
+				if(fileData.getValue().equals(filename)) 
+					fileToRemove = fileData;
+			}
+			this.fileDataList.remove(fileToRemove);
+		}
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(new ResponseTransfer("¡El archivo '" + filename + "' se ha eliminado con éxito!"));
+	}
+	
+	/**
+	 * Elimina todos los archivos existentes en el directorio upload-dir 
+	 * @return
+	 */
+	@DeleteMapping(path = "/files", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ResponseTransfer> deleteAll() {
+		this.storageService.deleteAll();
+		this.fileDataList.clear();
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(new ResponseTransfer("Se han eliminado todos los archivos del servidor"));
 	}
 
+	
 	/**
 	 * 
-	 * @param file El archivo obtenido del navegador
-	 * @param dtoFileData Objeto de transferencia de datos que contiene información sobre el archivo cargado
+	 * @param file              El archivo obtenido del navegador
+	 * @param fileKey           La 'llave' o 'customTitle' del componente
+	 *                          file-upload. Esta llave es una etiqueta para el
+	 *                          archivo asignada por el equipo de desarrollo.
+	 * @param fileValue         El nombre original del archivo que cargó el usuario
+	 * @param requiredExtension
 	 * @return HttpStatus.OK cuando el archivo se ha cargado exitosamente; ResponseStatusException en caso contrario
-	 */
-	/**
-	 * 
-	 * @param file El archivo obtenido del navegador
-	 * @param fileKey La 'llave' o 'customTitle' del componente file-upload. Esta llave es una etiqueta para el archivo asignada por el equipo de desarrollo.  
-	 * @param fileValue El nombre original del archivo que cargó el usuario
-	 * @param requiredExtension 
-	 * @return
 	 */
 	@PostMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseTransfer> handleFileUpload(
-			@RequestParam("file") MultipartFile file, 
-			@RequestParam("key") String fileKey,
+			@RequestParam("file") MultipartFile file,
+			@RequestParam("key") String fileKey, 
 			@RequestParam("value") String fileValue,
 			@RequestParam("requiredExtension") String requiredExtension) {
 
 		/**
-		 * Se verifica que la extensión requerida del archivo en el frontend sea la misma que la extensión del archivo que cargó el usuario
+		 * Se verifica que la extensión requerida del archivo en el frontend sea la
+		 * misma que la extensión del archivo que cargó el usuario
 		 */
 		String extension = "";
-		switch(requiredExtension){
+		switch (requiredExtension) {
 		case ".txt":
 			extension = "text/plain";
 			break;
 		case ".DBF":
 			extension = "application/octet-stream";
 			break;
-		default :
+		default:
 			extension = "";
 			break;
 		}
-		if(file.getContentType().contentEquals(extension)){
+		System.out.println("Nombre: " + file.getOriginalFilename());
+		System.out.println("Extension: " + file.getContentType());
+		if (file.getContentType().contentEquals(extension)) {
 			try {
-				//Guarda todos los nombres de todos los archivos que existen en la carpeta upload-dir en una lista local
-				List<String> fileNames = storageService.loadAll().map(
-						path -> path.getFileName().toString())
+				// Guarda todos los nombres de todos los archivos que existen en la carpeta
+				// upload-dir en una lista local
+				List<String> fileNames = storageService.loadAll().map(path -> path.getFileName().toString())
 						.collect(Collectors.toList());
-				//Se verifica que no exista un archivo con el mismo nombre que el archivo que se intenta cargar
-				if(!fileNames.contains(fileValue)) {
-					//Almacena el archivo en la carpeta upload-dir
+				// Se verifica que no exista un archivo con el mismo nombre que el archivo que
+				// se intenta cargar
+				if (!fileNames.contains(fileValue)) {
+					// Almacena el archivo en la carpeta upload-dir
 					storageService.store(file);
-				}else {
-					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseTransfer("Ya existe un archivo con el nombre '"+fileValue+"' almacenado en el servidor. Intente subir otro archivo con un nombre distinto"));
+				} else {
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+							.body(new ResponseTransfer("Ya existe un archivo con el nombre '" + fileValue
+									+ "' almacenado en el servidor. Intente subir otro archivo con un nombre distinto"));
 				}
-				//Se actualiza la lista con los nombres de los archivos
-				fileNames = storageService.loadAll().map(
-						path -> path.getFileName().toString())
+				// Se actualiza la lista con los nombres de los archivos
+				fileNames = storageService.loadAll().map(path -> path.getFileName().toString())
 						.collect(Collectors.toList());
-				//Comprueba que el archivo que se acaba de subir se encuentre en la lista actualizada para enviar al frontend una respuesta de éxito
-				if(fileNames.contains(fileValue)) {
-					//Se registra la información de ese archivo en una variable de control almacenada localmente en una lista
+				// Comprueba que el archivo que se acaba de subir se encuentre en la lista
+				// actualizada para enviar al frontend una respuesta de éxito
+				if (fileNames.contains(fileValue)) {
+					// Se registra la información de ese archivo en una variable de control
+					// almacenada localmente en una lista
 					this.fileDataList.add(new FileDataDto(fileKey, fileValue, requiredExtension));
-					return ResponseEntity.status(HttpStatus.OK).body(new ResponseTransfer("¡El archivo '"+file.getOriginalFilename()+"' ha sido cargado al servidor con éxito!"));
+					return ResponseEntity.status(HttpStatus.OK).body(new ResponseTransfer(
+							"¡El archivo '" + file.getOriginalFilename() + "' ha sido cargado al servidor con éxito!"));
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
 				HttpStatus status;
-				if(e instanceof IllegalArgumentException) {
+				if (e instanceof IllegalArgumentException) {
 					status = HttpStatus.BAD_REQUEST;
 				} else {
 					status = HttpStatus.INTERNAL_SERVER_ERROR;
 				}
 				throw new ResponseStatusException(status, e.getMessage());
 			}
-			
-		}else {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseTransfer("El archivo "+file.getOriginalFilename()+" no cumple con la extensión requerida"));
+
+		} else {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseTransfer(
+					"El archivo " + file.getOriginalFilename() + " no cumple con la extensión requerida"));
 		}
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseTransfer(""));
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+				.body(new ResponseTransfer("Ha ocurrido un error en el servidor"));
 	}
-
-
-	@GetMapping(path = "/asdf", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseTransfer> respuesta() {
-
-		return ResponseEntity.status(HttpStatus.OK).body(new ResponseTransfer("¡El archivo ha sido cargado al servidor con éxito!"));
-	}
-
 
 	/**
-	 * Genera una nueva base de datos Mongo a partir de los archivos subidos al servidor
+	 * Genera una nueva base de datos Mongo a partir de los archivos subidos al
+	 * servidor
+	 * 
 	 * @return
 	 */
 	@PostMapping("/generarbd")
-	public String generabd() {
+	public ResponseEntity<ResponseTransfer> generateDB() {
 
 		pentahoETLService.extractAndLoadAGA(this.fileDataList, storageService.getRootLocation());
-		return "redirect:/";
+		return  ResponseEntity.status(HttpStatus.OK).body(new ResponseTransfer(
+				"La base de datos se ha generado con éxito"));
 	}
-
 
 	@ExceptionHandler(StorageFileNotFoundException.class)
 	public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {

@@ -18,6 +18,10 @@ public class FileDataDto {
 		this.value = value;
 		this.extension = extension;
 	}
+
+	public FileDataDto() {
+		super();
+	}
 	
 	
 }
