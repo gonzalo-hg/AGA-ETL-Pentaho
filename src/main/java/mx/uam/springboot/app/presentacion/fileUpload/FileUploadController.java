@@ -229,7 +229,7 @@ public class FileUploadController {
 	@PostMapping("/generarbd")
 	public ResponseEntity<ResponseTransfer> generateDB() {
 
-		pentahoETLService.extractAndLoadAGA(this.fileDataList, storageService.getRootLocation());
+		pentahoETLService.extractAndLoadFiles(this.fileDataList, storageService.getRootLocation());
 		return  ResponseEntity.status(HttpStatus.OK).body(new ResponseTransfer(
 				"La base de datos se ha generado con éxito"));
 	}
