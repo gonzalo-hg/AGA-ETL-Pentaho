@@ -54,7 +54,6 @@ public class PentahoETLService {
 				   case "Inscritos en ABC" :
 					   jobMeta.setParameterValue("pathABC", uploadPathDir+"/"+f.getValue());
 				      break;
-				   
 				   default : 
 				      
 				}
