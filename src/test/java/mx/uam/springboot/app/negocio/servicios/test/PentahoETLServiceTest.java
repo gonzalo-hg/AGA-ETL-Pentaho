@@ -5,7 +5,7 @@ import static org.mockito.Mockito.mock;
 
 import org.junit.jupiter.api.Test;
 
-import mx.uam.springboot.app.negocio.servicios.PentahoETLService;
+import mx.uam.etl.backend.business.PentahoETLService;
 
 class PentahoETLServiceTest {
 

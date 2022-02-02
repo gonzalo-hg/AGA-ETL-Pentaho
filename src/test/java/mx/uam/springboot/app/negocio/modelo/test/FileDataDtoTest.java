@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import mx.uam.springboot.app.negocio.modelo.FileDataDto;
+import mx.uam.etl.backend.business.model.FileDataDto;
 
 class FileDataDtoTest {
 

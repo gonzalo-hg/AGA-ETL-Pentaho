@@ -3,7 +3,8 @@ package mx.uam.springboot.app.negocio.modelo.test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
-import mx.uam.springboot.app.negocio.modelo.ResponseTransfer;
+
+import mx.uam.etl.backend.business.model.ResponseTransfer;
 
 class ResponseTransferTest {
 
