@@ -659,7 +659,7 @@
       <description />
       <type>FILE_EXISTS</type>
       <filename>${pathHEGR1}</filename>
-      <parallel>N</parallel>
+      <parallel>Y</parallel>
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>480</xloc>
@@ -670,7 +670,7 @@
       <description />
       <type>FILE_EXISTS</type>
       <filename>${pathHEGR2}</filename>
-      <parallel>N</parallel>
+      <parallel>Y</parallel>
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>480</xloc>
@@ -681,7 +681,7 @@
       <description />
       <type>FILE_EXISTS</type>
       <filename>${pathHEGR3}</filename>
-      <parallel>N</parallel>
+      <parallel>Y</parallel>
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>480</xloc>
@@ -692,7 +692,7 @@
       <description />
       <type>FILE_EXISTS</type>
       <filename>${pathHEGR4}</filename>
-      <parallel>N</parallel>
+      <parallel>Y</parallel>
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>480</xloc>
@@ -703,7 +703,7 @@
       <description />
       <type>FILE_EXISTS</type>
       <filename>${pathHEGR5}</filename>
-      <parallel>N</parallel>
+      <parallel>Y</parallel>
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>480</xloc>
@@ -714,7 +714,7 @@
       <description />
       <type>FILE_EXISTS</type>
       <filename>${pathHEGR6}</filename>
-      <parallel>N</parallel>
+      <parallel>Y</parallel>
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>480</xloc>
@@ -724,7 +724,7 @@
       <name>File Exists 3</name>
       <description />
       <type>FILE_EXISTS</type>
-      <filename />
+      <filename>${pathABC}</filename>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
@@ -774,7 +774,7 @@
         </parameter>
       </parameters>
       <set_append_logfile>N</set_append_logfile>
-      <parallel>N</parallel>
+      <parallel>Y</parallel>
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>256</xloc>

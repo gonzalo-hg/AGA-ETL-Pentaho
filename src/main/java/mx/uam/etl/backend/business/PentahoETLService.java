@@ -104,9 +104,9 @@ public class PentahoETLService {
 		// Se define transMeta con la ruta de la transformación con extensión .ktr
 		JobMeta jobMeta = new JobMeta("JOBBD/jobParaAGAs.kjb", null);
 		Job job = new Job(null, jobMeta);
-		jobMeta.setParameterValue("pathFolder", uploadPathDir + "/");
+		//jobMeta.setParameterValue("pathFolder", uploadPathDir );
 		job.shareVariablesWith(jobMeta);
-		log.info("jobParaAGAs.ktr empieza");
+		log.info("jobParaAGAs.kjb empieza");
 		job.start();
 		job.waitUntilFinished();
 		log.info("Extracción y carga de todos los archivos ha concluido");
