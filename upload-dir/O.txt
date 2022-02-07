@@ -1,2 +1,0 @@
-files;trimestre
-Users/priscilianojimenez/git/AGA-ETL-Pentaho/upload-dir/aga_lic_2021O_izt_8a_sem.DBF;21O                                                                                                 
