@@ -12,6 +12,7 @@
 	<groupId>com.uam.proyecto</groupId>
 	<artifactId>mongo-project-ejemplo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>mongo-project-ejemplo</name>
 
 	<description>Demo project for Spring Boot</description>
@@ -21,26 +22,18 @@
 	<repositories>
 		<repository>
 			<id>pentaho-releases</id>
-			<url>http://nexus.pentaho.org/content/groups/omni</url>
+			<url>https://nexus.pentaho.org/content/groups/omni</url>
 		</repository>
 	</repositories>
 	<dependencies>
 
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
-		</dependency>
-				
+	<dependency>
+			<groupId>pentaho-kettle</groupId>
+			<artifactId>kettle-core</artifactId>
+			<version>7.1.0.32-246</version>
+	</dependency>
+	
+		
 		
 		<dependency>
 			<groupId>pentaho</groupId>
@@ -57,27 +50,23 @@
 		</dependency>
 
 
-		<dependency>
-			<groupId>pentaho-kettle</groupId>
-			<artifactId>kettle-core</artifactId>
-			<version>7.1.0.32-246</version>
-		</dependency>
-
+		
 
 		<dependency>
 			<groupId>commons-vfs</groupId>
 			<artifactId>commons-vfs</artifactId>
 			<version>1.0</version>
 		</dependency>
-
-
+	
 		<dependency>
 			<groupId>pentaho-kettle</groupId>
 			<artifactId>kettle-engine</artifactId>
 			<version>7.1.0.32-246</version>
 		</dependency>
 
+	
 
+		
 		<dependency>
 			<groupId>pentaho-kettle</groupId>
 			<artifactId>kettle-ui-swt</artifactId>
@@ -108,12 +97,27 @@
 			<artifactId>javadbf</artifactId>
 			<version>0.4.0</version>
 		</dependency>
-		
+	
 		<dependency>
 		  <groupId>org.apache.httpcomponents</groupId>
 		  <artifactId>httpclient</artifactId>
 		  <scope>test</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+				
 
 	</dependencies>
 
@@ -122,6 +126,25 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<!-- generate Dockerfile -->
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>1.4.13</version>
+				<executions>
+					<execution>
+						<id>default</id>
+						<goals>
+							<goal>build</goal>
+							<goal>push</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<repository>${docker.image}</repository>
+					<tag>${project.version}</tag>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

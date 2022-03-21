@@ -480,7 +480,7 @@
     <auth_mech />
     <auth_kerberos>N</auth_kerberos>
     <mongo_db>AGA</mongo_db>
-    <mongo_collection>alumnos</mongo_collection>
+    <mongo_collection>HistorialExamenes</mongo_collection>
     <batch_insert_size>100</batch_insert_size>
     <connect_timeout />
     <socket_timeout />
@@ -502,7 +502,7 @@
         <use_incoming_field_name_as_mongo_field_name>Y</use_incoming_field_name_as_mongo_field_name>
         <update_match_field>Y</update_match_field>
         <modifier_update_operation>N/A</modifier_update_operation>
-        <modifier_policy>Update</modifier_policy>
+        <modifier_policy>Insert&amp;Update</modifier_policy>
         <json_field>N</json_field>
         <allow_null>N</allow_null>
       </mongo_field>
