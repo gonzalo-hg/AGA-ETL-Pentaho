@@ -1,0 +1,2 @@
+files;trimestre
+C:/Users/gonza/git/AGA-ETL-Pentaho/upload-dir/aga_lic_2021P_izt_4a_sem.DBF;21P                                                                                                 
