@@ -32,28 +32,28 @@ public class ExtractAndLoadFilesApplication {
 		SpringApplication.run(ExtractAndLoadFilesApplication.class, args);		
 	}
 	
-	/*
+	
 	@PostConstruct
 	public void prueba() {
 		try {
-			this.service.prueba();
+			this.service.extractAndLoadFiles();
 		} catch (KettleException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}*/
+	}
 	
 	/**
 	 * Elimina todos los archivos que existen en la carpeta "upload-dir" e inicializa el storageService
 	 * @param storageService
 	 * @return
 	 */
-	@Bean
+	/*@Bean
 	CommandLineRunner init(StorageService storageService) {
 		return (args) -> {
 			storageService.deleteAll();
 			storageService.init();
 		};
-	}
+	}*/
 
 }

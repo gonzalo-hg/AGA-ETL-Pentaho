@@ -34,7 +34,7 @@ public class PentahoETLService {
 	 *                      sea "upload-dir")
 	 * @throws KettleException
 	 */
-	public void extractAndLoadFiles(List<FileDataDto> filesData, String uploadPathDir) throws KettleException {
+	public void extractAndLoadFiles() throws KettleException {
 		log.info("Ejecutando pentahoETLService.extractAndLoadAga()");
 
 		// Se agregan los folders que contienen plugins a utilizar durante el step
@@ -46,10 +46,11 @@ public class PentahoETLService {
 		JobMeta jobMeta = new JobMeta("JOBBD/JOBunirbasededatosBueno.kjb", null);
 		Job job = new Job(null, jobMeta);
 		job.shareVariablesWith(jobMeta);
+		jobMeta.setParameterValue("pathAGA", "upload-dir" + "/" + "aga_lic_2021P_izt_4a_sem.DBF");
 
 		int indexHistorialExamenes = 1;
 
-		for (FileDataDto f : filesData) {
+		/*for (FileDataDto f : filesData) {
 			System.out.println(f.getValue());
 			switch (f.getKey()) {
 			case "AGA":
@@ -67,7 +68,7 @@ public class PentahoETLService {
 			default:
 
 			}
-		}
+		}*/
 		job.start();
 		job.waitUntilFinished();
 		log.info("Extracción y carga de todos los archivos ha concluido");
