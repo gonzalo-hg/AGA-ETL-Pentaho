@@ -33,15 +33,7 @@ public class ExtractAndLoadFilesApplication {
 	}
 	
 	
-	@PostConstruct
-	public void prueba() {
-		try {
-			this.service.extractAndLoadFiles();
-		} catch (KettleException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	
 	
 	/**
 	 * Elimina todos los archivos que existen en la carpeta "upload-dir" e inicializa el storageService
@@ -54,6 +46,16 @@ public class ExtractAndLoadFilesApplication {
 			storageService.deleteAll();
 			storageService.init();
 		};
+		
+	@PostConstruct
+	public void prueba() {
+		try {
+			service.extractAndLoadFiles();
+		} catch (KettleException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	}*/
 
 }
