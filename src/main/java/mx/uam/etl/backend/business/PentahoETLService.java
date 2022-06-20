@@ -39,68 +39,71 @@ public class PentahoETLService {
 		StepPluginType.getInstance().getPluginFolders().add(new PluginFolder("pentahoPlugins/classes", false, true));
 		StepPluginType.getInstance().getPluginFolders().add(new PluginFolder("pentahoPlugins/libswt", false, true));		
 	}
-	public void extractAndLoadFiles() throws KettleException {
-		log.info("Ejecutando pentahoETLService.extractAndLoadAga()");
-		try {
-		
+	public void extractAndLoadFiles(List<FileDataDto> filesData, String uploadPathDir) throws KettleException {
+	
 		loadPlugins();
-		
+		for (FileDataDto f : filesData ) {
+			log.info("Ejecutando pentahoETLService.extractAndLoadAga()");
+			try {
+			
+			String [] trimestre  = new String [3];
+			trimestre[0] =  "21I";
+			trimestre[1] = "21P";
+			trimestre[2] = "21O";
+			String file =f.getValue();
+				
+			
+				log.info("Antes del IF");
+				log.info("TRIMESTRE I",file.contains(trimestre[0]),"o TRIMESTRE P",file.contains(trimestre[1]));
+				if( file.contains(trimestre[0]) || file.contains(trimestre[1])) {
+					KettleEnvironment.init();
+					log.info("Empieza transformación");
+					TransMeta transMeta = new TransMeta("JOBBD/TransformacionParaCargarAGAxTrimestreIYP.ktr");
+					Trans trans = new Trans(transMeta);
+					trans.shareVariablesWith(transMeta);			
+								
+					transMeta.setParameterValue("pathAGA","upload-dir/" + file);
+					log.info("ARCHIVO A CARGAR"+ file);
+					trans.setLogLevel(LogLevel.ERROR);
+					trans.execute(null);
+					trans.waitUntilFinished();
+					
+					if (trans.getErrors() > 0) {
+						log.info("Ocurrió un error durante la extracción y carga de AGA.DBF");
+					}
+					
+				}
+				else {
+					KettleEnvironment.init();
+					log.info("Empieza transformación");
+					TransMeta transMeta = new TransMeta("JOBBD/TransformacionParaCargarAGAxTrimestreO.ktr");
+					Trans trans = new Trans(transMeta);
+					trans.shareVariablesWith(transMeta);			
+								
+					
+					transMeta.setParameterValue("pathAGA","upload-dir/" + file);
+					trans.setLogLevel(LogLevel.ERROR);
+					trans.execute(null);
+					trans.waitUntilFinished();
+					
+					if (trans.getErrors() > 0) {
+						log.info("Ocurrió un error durante la extracción y carga de AGA.DBF");
+					}
+					
+				}
+				
+			} catch (KettleException e) {
+				e.printStackTrace();
+			}
 
 		
-		
-		String [] trimestre  = new String [3];
-		trimestre[0] =  "21I";
-		trimestre[1] = "21P";
-		trimestre[2] = "21O";
-		String file ="aga_lic_2021O_izt_8a_sem.DBF";
-			
-		
-			log.info("Antes del IF");
-			log.info("TRIMESTRE I",file.contains(trimestre[0]),"o TRIMESTRE P",file.contains(trimestre[1]));
-			if( file.contains(trimestre[0]) || file.contains(trimestre[1])) {
-				KettleEnvironment.init();
-				log.info("Empieza transformación");
-				TransMeta transMeta = new TransMeta("JOBBD/TransformacionParaCargarAGAxTrimestreIYP.ktr");
-				Trans trans = new Trans(transMeta);
-				trans.shareVariablesWith(transMeta);			
-							
-				transMeta.setParameterValue("pathAGA","upload-dir/" + file);
-				log.info("ARCHIVO A CARGAR",file);
-				trans.setLogLevel(LogLevel.ERROR);
-				trans.execute(null);
-				trans.waitUntilFinished();
-				
-				if (trans.getErrors() > 0) {
-					log.info("Ocurrió un error durante la extracción y carga de AGA.DBF");
-				}
-				
-			}
-			else {
-				KettleEnvironment.init();
-				log.info("Empieza transformación");
-				TransMeta transMeta = new TransMeta("JOBBD/TransformacionParaCargarAGAxTrimestreO.ktr");
-				Trans trans = new Trans(transMeta);
-				trans.shareVariablesWith(transMeta);			
-							
-				
-				transMeta.setParameterValue("pathAGA","upload-dir/" + file);
-				trans.setLogLevel(LogLevel.ERROR);
-				trans.execute(null);
-				trans.waitUntilFinished();
-				
-				if (trans.getErrors() > 0) {
-					log.info("Ocurrió un error durante la extracción y carga de AGA.DBF");
-				}
-				
-			}
-			
-		} catch (KettleException e) {
-			e.printStackTrace();
 		}
 
-	
-	}
+		}
 
+		
+		
+		
 
 		/*for (FileDataDto f : filesData) {
 			System.out.println(f.getValue());
@@ -145,19 +148,22 @@ public class PentahoETLService {
 		loadPlugins();
 		for (FileDataDto f : filesData) {
 			String [] partsOfFile = f.getValue().split("_");
-			String trimestreAGA = partsOfFile[2].replaceFirst("$[0-9]{2}", "");
+			String trimestreAGA = partsOfFile[2].replaceFirst("^[0-9]{2}","");
 			System.out.println(f.getValue());
+			System.out.println("Trimestre: "+trimestreAGA);
+	
 			switch (trimestreAGA) {
 			case "21P":{
+				log.info("Empieza transformación trimestre P");
 				KettleEnvironment.init();
-				log.info("Empieza transformación");
+				
 				TransMeta transMeta = new TransMeta("JOBBD/TransformacionParaCargarAGAP.ktr");
 				Trans trans = new Trans(transMeta);
 				trans.shareVariablesWith(transMeta);			
 							
 				transMeta.setParameterValue("trimestre",trimestreAGA);
 				transMeta.setParameterValue("pathAGA","upload-dir/" + f.getValue());
-				trans.setLogLevel(LogLevel.ERROR);
+				trans.setLogLevel(LogLevel.BASIC);
 				trans.execute(null);
 				trans.waitUntilFinished();
 				
@@ -176,7 +182,7 @@ public class PentahoETLService {
 							
 				transMeta.setParameterValue("trimestre",trimestreAGA);
 				transMeta.setParameterValue("pathAGA","upload-dir/" + f.getValue());
-				trans.setLogLevel(LogLevel.ERROR);
+				trans.setLogLevel(LogLevel.BASIC);
 				trans.execute(null);
 				trans.waitUntilFinished();
 				
@@ -195,7 +201,7 @@ public class PentahoETLService {
 							
 				transMeta.setParameterValue("trimestre",trimestreAGA);
 				transMeta.setParameterValue("pathAGA","upload-dir/" + f.getValue());
-				trans.setLogLevel(LogLevel.ERROR);
+				trans.setLogLevel(LogLevel.BASIC);
 				trans.execute(null);
 				trans.waitUntilFinished();
 				

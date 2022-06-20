@@ -212,7 +212,7 @@ public class FileUploadController {
 	 * 
 	 * @return
 	 */
-	/*@PostMapping("/generateDB")
+	@PostMapping("/generateDB")
 	public ResponseEntity<ResponseTransfer> generateDB() {
 		
 		try {
@@ -224,7 +224,7 @@ public class FileUploadController {
 		} catch (Exception e) {
 			throw new ResponseStatusException(errorManager.getHttpStatusForException(e), "Ha ocurrido un error: "+e.getMessage(), e);
 		}
-	}*/
+	}
 	
 	/**
 	 * Genera una nueva base de datos Mongo a partir de los archivos subidos al
