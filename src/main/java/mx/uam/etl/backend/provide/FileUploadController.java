@@ -65,6 +65,12 @@ public class FileUploadController {
 		return ResponseEntity.status(HttpStatus.OK).body(fileNames);
 	}
 
+	@GetMapping(path = "/files/test", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> test(){
+		System.out.println("Funciono la autenticacion :D");
+		return ResponseEntity.status(HttpStatus.OK).body("OK");
+	}
+
 	/**
 	 * Carga en memoria el archivo con el nombre recibido (si existe) y se lo envía
 	 * al navegador para descarga
