@@ -29,8 +29,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 public class AuthotizationFilter extends OncePerRequestFilter {
 
 
-    private static final String TOKEN_PREFIX = "Bearer";
-    private String SECRET = "secret";
+    public static final String TOKEN_PREFIX = "Bearer ";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -43,7 +42,7 @@ public class AuthotizationFilter extends OncePerRequestFilter {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
 
 
-            if(authorizationHeader != null  && authorizationHeader.startsWith(AUTHORIZATION)){
+            if(authorizationHeader != null  && authorizationHeader.startsWith(TOKEN_PREFIX)){
                 try {
                     String token = authorizationHeader.substring(TOKEN_PREFIX.length());
                     //Algorithm algorithm = Algorithm.HMAC256(SECRET.getBytes());

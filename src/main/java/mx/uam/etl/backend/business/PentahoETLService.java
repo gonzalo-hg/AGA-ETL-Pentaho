@@ -11,15 +11,20 @@ import org.pentaho.di.job.Job;
 import org.pentaho.di.job.JobMeta;
 import org.pentaho.di.trans.Trans;
 import org.pentaho.di.trans.TransMeta;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 import mx.uam.etl.backend.business.model.FileDataDto;
+import mx.uam.etl.backend.crosscutting.configuration.YamlResourcesConfiguration;
 import mx.uam.etl.backend.errormanagement.DabataBaseNotGeneratedException;
 
 @Slf4j
 @Service
 public class PentahoETLService {
+	
+	@Autowired
+	private YamlResourcesConfiguration env;
 
 	/**
 	 * Se encarga de ejecutar las rutinas (jobs) de Pentaho correspondientes a los
@@ -63,6 +68,10 @@ public class PentahoETLService {
 					trans.shareVariablesWith(transMeta);			
 								
 					transMeta.setParameterValue("pathAGA","upload-dir/" + file);
+					transMeta.setParameterValue("databaseHost",env.getDatabaseHost());
+					transMeta.setParameterValue("databaseUser",env.getDatabaseUser());
+					transMeta.setParameterValue("databasePassword",env.getDatabasePassword());
+
 					log.info("ARCHIVO A CARGAR"+ file);
 					trans.setLogLevel(LogLevel.ERROR);
 					trans.execute(null);
@@ -82,6 +91,11 @@ public class PentahoETLService {
 								
 					
 					transMeta.setParameterValue("pathAGA","upload-dir/" + file);
+					
+					transMeta.setParameterValue("databaseHost",env.getDatabaseHost());
+					transMeta.setParameterValue("databaseUser",env.getDatabaseUser());
+					transMeta.setParameterValue("databasePassword",env.getDatabasePassword());
+					
 					trans.setLogLevel(LogLevel.ERROR);
 					trans.execute(null);
 					trans.waitUntilFinished();
@@ -159,7 +173,11 @@ public class PentahoETLService {
 				
 				TransMeta transMeta = new TransMeta("JOBBD/TransformacionParaCargarAGAP.ktr");
 				Trans trans = new Trans(transMeta);
-				trans.shareVariablesWith(transMeta);			
+				trans.shareVariablesWith(transMeta);	
+				
+				transMeta.setParameterValue("databaseHost",env.getDatabaseHost());
+				transMeta.setParameterValue("databaseUser",env.getDatabaseUser());
+				transMeta.setParameterValue("databasePassword",env.getDatabasePassword());
 							
 				transMeta.setParameterValue("trimestre",trimestreAGA);
 				transMeta.setParameterValue("pathAGA","upload-dir/" + f.getValue());
@@ -180,6 +198,10 @@ public class PentahoETLService {
 				Trans trans = new Trans(transMeta);
 				trans.shareVariablesWith(transMeta);			
 							
+				transMeta.setParameterValue("databaseHost",env.getDatabaseHost());
+				transMeta.setParameterValue("databaseUser",env.getDatabaseUser());
+				transMeta.setParameterValue("databasePassword",env.getDatabasePassword());
+				
 				transMeta.setParameterValue("trimestre",trimestreAGA);
 				transMeta.setParameterValue("pathAGA","upload-dir/" + f.getValue());
 				trans.setLogLevel(LogLevel.BASIC);
@@ -201,6 +223,11 @@ public class PentahoETLService {
 							
 				transMeta.setParameterValue("trimestre",trimestreAGA);
 				transMeta.setParameterValue("pathAGA","upload-dir/" + f.getValue());
+				
+				transMeta.setParameterValue("databaseHost",env.getDatabaseHost());
+				transMeta.setParameterValue("databaseUser",env.getDatabaseUser());
+				transMeta.setParameterValue("databasePassword",env.getDatabasePassword());
+				
 				trans.setLogLevel(LogLevel.BASIC);
 				trans.execute(null);
 				trans.waitUntilFinished();
@@ -261,6 +288,11 @@ public class PentahoETLService {
 			// El parámetro compartido es la ruta del AGA.BFD que se va a tomar para la
 			// extracción de datos
 			transMeta.setParameterValue("pathAGA", "upload-dir/aga_lic_2021I_izt_4a_sem.DBF");
+			
+			transMeta.setParameterValue("databaseHost",env.getDatabaseHost());
+			transMeta.setParameterValue("databaseUser",env.getDatabaseUser());
+			transMeta.setParameterValue("databasePassword",env.getDatabasePassword());
+			
 			trans.setLogLevel(LogLevel.ERROR);
 			trans.execute(null);
 			trans.waitUntilFinished();
@@ -296,6 +328,11 @@ public class PentahoETLService {
 			// El parámetro compartido es la ruta del AGA.BFD que se va a tomar para la
 			// extracción de datos
 			transMeta.setParameterValue("pathAGA", "target/upload-dir/aga_lic_2021I_izt_4a_sem.DBF");
+			
+			transMeta.setParameterValue("databaseHost",env.getDatabaseHost());
+			transMeta.setParameterValue("databaseUser",env.getDatabaseUser());
+			transMeta.setParameterValue("databasePassword",env.getDatabasePassword());
+			
 			trans.setLogLevel(LogLevel.ERROR);
 			trans.execute(null);
 			trans.waitUntilFinished();
