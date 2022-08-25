@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>com.uam.proyecto</groupId>
 	<artifactId>mongo-project-ejemplo</artifactId>
-	<version>0.0.7-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>mongo-project-ejemplo</name>
 
