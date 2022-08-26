@@ -7,7 +7,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.5.3</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.uam.proyecto</groupId>
 	<artifactId>mongo-project-ejemplo</artifactId>
@@ -27,14 +27,14 @@
 	</repositories>
 	<dependencies>
 
-	<dependency>
+		<dependency>
 			<groupId>pentaho-kettle</groupId>
 			<artifactId>kettle-core</artifactId>
 			<version>7.1.0.32-246</version>
-	</dependency>
-	
-		
-		
+		</dependency>
+
+
+
 		<dependency>
 			<groupId>pentaho</groupId>
 			<artifactId>pentaho-mongodb-plugin</artifactId>
@@ -50,23 +50,23 @@
 		</dependency>
 
 
-		
+
 
 		<dependency>
 			<groupId>commons-vfs</groupId>
 			<artifactId>commons-vfs</artifactId>
 			<version>1.0</version>
 		</dependency>
-	
+
 		<dependency>
 			<groupId>pentaho-kettle</groupId>
 			<artifactId>kettle-engine</artifactId>
 			<version>7.1.0.32-246</version>
 		</dependency>
 
-	
 
-		
+
+
 		<dependency>
 			<groupId>pentaho-kettle</groupId>
 			<artifactId>kettle-ui-swt</artifactId>
@@ -97,13 +97,13 @@
 			<artifactId>javadbf</artifactId>
 			<version>0.4.0</version>
 		</dependency>
-	
+
 		<dependency>
-		  <groupId>org.apache.httpcomponents</groupId>
-		  <artifactId>httpclient</artifactId>
-		  <scope>test</scope>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -117,17 +117,52 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
-				
+			<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.auth0/java-jwt -->
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>3.18.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>5.5.2</version>
+		</dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+        </dependency>
 
-	</dependencies>
+
+    </dependencies>
 
 	<build>
 		<plugins>
+			<!-- generate jar -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<configuration>
+							<classifier>spring-boot</classifier>
+							<mainClass>
+								com.baeldung.executable.ExecutableMavenJar
+							</mainClass>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
-			<!-- generate Dockerfile -->
+	
+			<!-- generate Dockerfile
 			<plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>dockerfile-maven-plugin</artifactId>
@@ -145,7 +180,24 @@
 					<repository>${docker.image}</repository>
 					<tag>${project.version}</tag>
 				</configuration>
+			</plugin> -->
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.2</version>
+				<configuration>
+					<skipTests>true</skipTests>
+				</configuration>
 			</plugin>
 		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
 	</build>
 </project>
